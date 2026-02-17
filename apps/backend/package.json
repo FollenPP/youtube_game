@@ -2,6 +2,7 @@
   "name": "@youtube-game/backend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",

@@ -90,6 +90,7 @@ cp apps/frontend/.env.example apps/frontend/.env
 ```
 
 Update `apps/backend/.env` with your local PostgreSQL credentials.
+You can also change `FRONTEND_URL` if frontend runs on another host/port.
 
 ### 3) Create database and run Prisma migration
 

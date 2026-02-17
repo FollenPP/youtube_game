@@ -13,10 +13,10 @@ export function HomePage() {
 
         <div className="flex flex-wrap gap-3">
           <Link className="rounded-lg bg-brand-500 px-4 py-2 font-medium hover:bg-violet-500" to="/register">
-            Начать
+            Регистрация
           </Link>
           <Link className="rounded-lg border border-slate-700 px-4 py-2 hover:border-slate-500" to="/login">
-            Уже есть аккаунт
+            Вход
           </Link>
         </div>
       </section>

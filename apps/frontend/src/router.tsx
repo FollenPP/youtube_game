@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { DashboardPage } from './pages/DashboardPage';
 import { HomePage } from './pages/HomePage';
@@ -25,5 +25,9 @@ export const router = createBrowserRouter([
         <DashboardPage />
       </ProtectedRoute>
     )
+  },
+  {
+    path: '*',
+    element: <Navigate to="/" replace />
   }
 ]);
