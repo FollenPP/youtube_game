@@ -1,0 +1,21 @@
+{
+  "name": "youtube-game-platform",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/frontend",
+    "apps/backend"
+  ],
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:backend dev:frontend",
+    "dev:frontend": "npm run dev --workspace @youtube-game/frontend",
+    "dev:backend": "npm run dev --workspace @youtube-game/backend",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "prisma:migrate": "npm run prisma:migrate --workspace @youtube-game/backend",
+    "prisma:generate": "npm run prisma:generate --workspace @youtube-game/backend"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
