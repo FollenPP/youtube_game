@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Platform {
+  YOUTUBE
+  TWITCH
+}
+
+enum QuestType {
+  DAILY
+  WEEKLY
+  MILESTONE
+}
+
+model User {
+  id              String         @id @default(cuid())
+  email           String         @unique
+  username        String         @unique
+  passwordHash    String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  channels        Channel[]
+  gameProfile     GameProfile?
+  questProgress   QuestProgress[]
+  dailyMetrics    DailyMetric[]
+}
+
+model Channel {
+  id                String       @id @default(cuid())
+  userId            String
+  platform          Platform
+  externalChannelId String
+  title             String?
+  subscribers       Int          @default(0)
+  views             Int          @default(0)
+  videoCount        Int          @default(0)
+  connectedAt       DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([platform, externalChannelId])
+}
+
+model GameProfile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  totalXp        Int      @default(0)
+  level          Int      @default(1)
+  streakDays     Int      @default(0)
+  lastActiveDate DateTime?
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SkillNode {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  title       String
+  description String
+  maxLevel    Int      @default(5)
+}
+
+model Quest {
+  id          String      @id @default(cuid())
+  title       String
+  description String
+  xpReward    Int
+  questType   QuestType
+  createdAt   DateTime    @default(now())
+  progress    QuestProgress[]
+}
+
+model QuestProgress {
+  id           String   @id @default(cuid())
+  userId       String
+  questId      String
+  completed    Boolean  @default(false)
+  progress     Int      @default(0)
+  target       Int      @default(1)
+  completedAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quest        Quest    @relation(fields: [questId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questId])
+}
+
+model DailyMetric {
+  id              String   @id @default(cuid())
+  userId          String
+  date            DateTime
+  subscribers     Int      @default(0)
+  views           Int      @default(0)
+  uploads         Int      @default(0)
+  ctr             Float    @default(0)
+  averageViewTime Float    @default(0)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+}
